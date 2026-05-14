@@ -30,7 +30,7 @@ export default function FeedPage() {
             </div>
           </Link>
         </div>
-        <div className="flex items-center gap-2 mt-3 pl-13">
+        <div className="flex items-center gap-1 sm:gap-2 mt-3 flex-wrap">
           <Link href="/create?type=image">
             <Button variant="ghost" size="sm" className="text-green-600 gap-1.5 text-xs">
               <Image className="h-4 w-4" />

@@ -23,7 +23,7 @@ export default function MainLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <SocialSidebar />
       <main className="md:ml-[72px] xl:ml-[240px] lg:mr-[280px] xl:mr-[300px] min-h-screen pb-16 md:pb-0">
         {children}
