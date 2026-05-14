@@ -1,0 +1,220 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum PostStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(USER)
+  bio           String?
+  location      String?
+  latitude      Float?
+  longitude     Float?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts   Account[]
+  sessions   Session[]
+  posts      Post[]
+  comments   Comment[]
+  likes      Like[]
+  labReports LabReport[]
+  bookmarks  Bookmark[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Category {
+  id          String @id @default(cuid())
+  name        String @unique
+  slug        String @unique
+  description String?
+  icon        String?
+
+  foodItems FoodItem[]
+  posts     Post[]
+}
+
+model FoodItem {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  description     String?  @db.Text
+  image           String?
+  categoryId      String?
+  season          String?
+  region          String?
+  benefits        String[] 
+  nutritionalInfo Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  category   Category?   @relation(fields: [categoryId], references: [id])
+  posts      Post[]
+  labReports LabReport[]
+  foodSources FoodSourceItem[]
+}
+
+model Post {
+  id          String     @id @default(cuid())
+  title       String
+  content     String     @db.Text
+  excerpt     String?
+  images      String[]
+  status      PostStatus @default(PENDING)
+  rejectionReason String?
+  authorId    String
+  categoryId  String?
+  foodItemId  String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id])
+  foodItem FoodItem? @relation(fields: [foodItemId], references: [id])
+  comments Comment[]
+  likes    Like[]
+  bookmarks Bookmark[]
+
+  @@index([status])
+  @@index([authorId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  postId    String
+  userId    String
+  parentId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  post     Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies  Comment[] @relation("CommentReplies")
+}
+
+model Like {
+  id     String @id @default(cuid())
+  postId String
+  userId String
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+}
+
+model LabReport {
+  id         String   @id @default(cuid())
+  title      String
+  fileUrl    String
+  fileName   String
+  fileType   String
+  foodItemId String
+  uploadedBy String
+  verified   Boolean  @default(false)
+  verifiedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  foodItem FoodItem @relation(fields: [foodItemId], references: [id])
+  uploader User     @relation(fields: [uploadedBy], references: [id])
+}
+
+model FoodSource {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  address     String
+  latitude    Float
+  longitude   Float
+  phone       String?
+  website     String?
+  type        String  // farm, market, store, restaurant
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  foodItems FoodSourceItem[]
+}
+
+model FoodSourceItem {
+  id           String @id @default(cuid())
+  foodSourceId String
+  foodItemId   String
+  available    Boolean @default(true)
+  price        String?
+
+  foodSource FoodSource @relation(fields: [foodSourceId], references: [id], onDelete: Cascade)
+  foodItem   FoodItem   @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
+
+  @@unique([foodSourceId, foodItemId])
+}
