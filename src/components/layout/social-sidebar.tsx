@@ -37,7 +37,7 @@ export function SocialSidebar() {
   const { data: session } = useSession();
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[72px] lg:w-[240px] border-r bg-card flex flex-col z-40">
+    <aside className="hidden md:flex fixed left-0 top-0 h-screen w-[72px] lg:w-[240px] border-r bg-card flex-col z-40">
       {/* Logo */}
       <div className="p-4 lg:px-5 lg:py-5">
         <Link href="/feed" className="flex items-center gap-2">

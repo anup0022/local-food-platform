@@ -239,7 +239,7 @@ export default function ProfilePage() {
   const joinDate = "January 2025";
 
   return (
-    <div className="max-w-4xl mx-auto pb-12">
+    <div className="max-w-4xl mx-auto px-4 pb-12">
       {/* ---- Cover Section ---- */}
       <div className="relative">
         {/* Cover gradient */}
