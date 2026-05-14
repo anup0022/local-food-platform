@@ -416,48 +416,6 @@ function LabReportSection({ post }: { post: MockPost }) {
           )}
         </div>
 
-        {/* Findings — visual comparison bars */}
-        {data.findings && (
-          <div className="space-y-5">
-            <h3 className="text-lg font-bold flex items-center gap-2"><TrendingUp className="h-5 w-5 text-blue-600" />Key Findings — Visual Comparison</h3>
-            {data.findings.map((f, i) => {
-              const localNum = f.localNum || 50;
-              const commNum = f.commercialNum || 50;
-              const maxVal = Math.max(localNum, commNum, 1);
-              return (
-                <div key={i} className="bg-card border rounded-xl p-5 hover:shadow-md transition-shadow">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="font-bold text-sm">{f.label}</span>
-                    {f.unit && <span className="text-xs text-muted-foreground">{f.unit}</span>}
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs w-20 text-right font-medium text-green-700 shrink-0">Kokum</span>
-                      <div className="flex-1 h-7 bg-green-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-green-500 to-emerald-400 rounded-full flex items-center justify-end pr-3 transition-all duration-1000"
-                          style={{ width: `${Math.max((localNum / maxVal) * 100, 8)}%` }}>
-                          <span className="text-[10px] font-bold text-white">{f.localValue}</span>
-                        </div>
-                      </div>
-                      {f.winner === "local" && <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0" />}
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs w-20 text-right font-medium text-red-600 shrink-0">Other</span>
-                      <div className="flex-1 h-7 bg-red-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-red-400 to-orange-400 rounded-full flex items-center justify-end pr-3 transition-all duration-1000"
-                          style={{ width: `${Math.max((commNum / maxVal) * 100, 8)}%` }}>
-                          <span className="text-[10px] font-bold text-white">{f.commercialValue}</span>
-                        </div>
-                      </div>
-                      {f.winner === "commercial" && <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0" />}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
         {/* Verdict */}
         {data.verdict && (
           <div className="mt-10 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-8">
