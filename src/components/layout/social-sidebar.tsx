@@ -37,19 +37,19 @@ export function SocialSidebar() {
   const { data: session } = useSession();
 
   return (
-    <aside className="hidden md:flex fixed left-0 top-0 h-screen w-[72px] lg:w-[240px] border-r bg-card flex-col z-40">
+    <aside className="hidden md:flex fixed left-0 top-0 h-screen w-[72px] xl:w-[240px] border-r bg-card flex-col z-40">
       {/* Logo */}
-      <div className="p-4 lg:px-5 lg:py-5">
+      <div className="p-4 xl:px-5 xl:py-5">
         <Link href="/feed" className="flex items-center gap-2">
           <Leaf className="h-8 w-8 text-primary shrink-0" />
-          <span className="text-xl font-bold text-primary hidden lg:block">
+          <span className="text-xl font-bold text-primary hidden xl:block">
             LocalBite
           </span>
         </Link>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-2 lg:px-3 space-y-1">
+      <nav className="flex-1 px-2 xl:px-3 space-y-1">
         {navItems.map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
           return (
@@ -69,9 +69,9 @@ export function SocialSidebar() {
                   isActive && "text-primary"
                 )}
               />
-              <span className="hidden lg:block">{item.label}</span>
+              <span className="hidden xl:block">{item.label}</span>
               {item.label === "Messages" && (
-                <span className="hidden lg:block ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
+                <span className="hidden xl:block ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
                   3
                 </span>
               )}
@@ -91,7 +91,7 @@ export function SocialSidebar() {
               )}
             >
               <MessageSquareWarning className="h-6 w-6 shrink-0" />
-              <span className="hidden lg:block">Moderate</span>
+              <span className="hidden xl:block">Moderate</span>
             </Link>
             <Link
               href="/admin"
@@ -103,7 +103,7 @@ export function SocialSidebar() {
               )}
             >
               <Shield className="h-6 w-6 shrink-0" />
-              <span className="hidden lg:block">Admin</span>
+              <span className="hidden xl:block">Admin</span>
             </Link>
           </>
         )}
@@ -121,7 +121,7 @@ export function SocialSidebar() {
               {session?.user?.name?.charAt(0) || "U"}
             </AvatarFallback>
           </Avatar>
-          <div className="hidden lg:block min-w-0">
+          <div className="hidden xl:block min-w-0">
             <p className="text-sm font-medium truncate">
               {session?.user?.name || "Guest User"}
             </p>

@@ -25,7 +25,7 @@ export default function MainLayout({
   return (
     <div className="min-h-screen bg-background">
       <SocialSidebar />
-      <main className="md:ml-[72px] lg:ml-[240px] xl:mr-[300px] min-h-screen pb-16 md:pb-0">
+      <main className="md:ml-[72px] xl:ml-[240px] lg:mr-[280px] xl:mr-[300px] min-h-screen pb-16 md:pb-0">
         {children}
       </main>
       <RightSidebar />

@@ -9,7 +9,7 @@ import { TrendingUp, UserPlus } from "lucide-react";
 
 export function RightSidebar() {
   return (
-    <aside className="hidden xl:block fixed right-0 top-0 h-screen w-[300px] border-l bg-card p-5 overflow-y-auto">
+    <aside className="hidden lg:block fixed right-0 top-0 h-screen w-[280px] xl:w-[300px] border-l bg-card p-5 overflow-y-auto">
       {/* Trending Tags */}
       <div className="mb-6">
         <h3 className="text-sm font-semibold flex items-center gap-2 mb-3">
